@@ -19,7 +19,7 @@ ax.set(xscale='log',yscale='log',xlabel='Sequence length N',ylabel='Saved interm
 ax.set_xticks([128,512,1024],['128','512','1,024']); ax.set_yticks([.00390625,.015625,.03125,.5,8,32],['4 KiB','16 KiB','32 KiB','0.5 MiB','8 MiB','32 MiB'])
 ax.xaxis.set_minor_formatter(NullFormatter()); ax.yaxis.set_minor_formatter(NullFormatter())
 ax.legend(loc='center left');ax.grid(alpha=.18,which='major')
-fig.text(.5,-.035,'Unmasked · float32 · batch 1 · 8 heads · excludes pre-existing inputs\nUnique storage saved by autograd, not peak process/device memory.',ha='center',fontsize=10)
+fig.text(.5,-.11,'Unmasked · float32 · batch 1 · 8 heads · excludes pre-existing inputs\nUnique storage saved by autograd, not peak process/device memory.',ha='center',fontsize=10)
 fig.savefig(ROOT/'results/storage.png',dpi=180,bbox_inches='tight');plt.close(fig)
 fig,ax=plt.subplots(figsize=(8,5.2),layout='constrained')
 for method,label in names.items():
@@ -29,7 +29,7 @@ for method,label in names.items():
  ax.fill_between(x,[a['min_ms'] for a in r],[a['max_ms'] for a in r],alpha=.1,color=colors[method])
 ax.set(xlabel='Sequence length N',ylabel='Forward + backward (ms)',title='Recomputation costs time in this CPU baseline')
 ax.set_xticks([128,512,1024]);ax.legend();ax.grid(alpha=.2)
-fig.text(.5,-.035,'1 CPU thread · float32 · batch 1 · 8 heads · dimension 64\nMedian and min–max of 20 runs; not a GPU performance claim.',ha='center',fontsize=10)
+fig.text(.5,-.11,'1 CPU thread · float32 · batch 1 · 8 heads · dimension 64\nMedian and min–max of 20 runs; not a GPU performance claim.',ha='center',fontsize=10)
 fig.savefig(ROOT/'results/latency.png',dpi=180,bbox_inches='tight');plt.close(fig)
 fig,ax=plt.subplots(figsize=(9,6.5));ax.set(xlim=(0,10),ylim=(0,7));ax.axis('off')
 def box(x,y,w,h,title,body,color):
