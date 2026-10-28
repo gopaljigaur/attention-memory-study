@@ -5,6 +5,7 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from matplotlib.patches import FancyBboxPatch
+from matplotlib.ticker import NullFormatter
 ROOT=Path(__file__).resolve().parent
 rows=json.loads((ROOT/'results/benchmark.json').read_text())['rows']
 names={'reference':'Direct','query_chunked':'Query chunks','recomputed_backward':'Recomputed backward'}
@@ -16,6 +17,7 @@ for method,label in names.items():
  ax.plot([x['tokens'] for x in r],[x['saved_intermediate_storage_bytes']/2**20 for x in r],marker='o',ms=8,lw=2.5,ls='--' if method=='query_chunked' else '-',label=label,color=colors[method])
 ax.set(xscale='log',yscale='log',xlabel='Sequence length N',ylabel='Saved intermediate storage (MiB)',title='What survives the forward pass?')
 ax.set_xticks([128,512,1024],['128','512','1,024']); ax.set_yticks([.00390625,.015625,.03125,.5,8,32],['4 KiB','16 KiB','32 KiB','0.5 MiB','8 MiB','32 MiB'])
+ax.xaxis.set_minor_formatter(NullFormatter()); ax.yaxis.set_minor_formatter(NullFormatter())
 ax.legend(loc='center left');ax.grid(alpha=.18,which='major')
 fig.text(.5,-.035,'Unmasked · float32 · batch 1 · 8 heads · excludes pre-existing inputs\nUnique storage saved by autograd, not peak process/device memory.',ha='center',fontsize=10)
 fig.savefig(ROOT/'results/storage.png',dpi=180,bbox_inches='tight');plt.close(fig)
